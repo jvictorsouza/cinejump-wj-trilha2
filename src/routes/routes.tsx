@@ -2,6 +2,7 @@ import React from "react";
 import { PartialRouteObject } from "react-router";
 import Home from "../views/home";
 import Layout from "../views/layout";
+import User from "../views/user";
 
 const routes: PartialRouteObject[] = [
   {
@@ -17,6 +18,10 @@ const routes: PartialRouteObject[] = [
         element: <Home />,
       },
     ],
+  },
+  {
+    path: "/user",
+    element: <User />,
   },
   {
     path: "*",
