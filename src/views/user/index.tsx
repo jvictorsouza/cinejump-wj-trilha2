@@ -16,6 +16,7 @@ import {
 } from './styles'
 import useForm, { Form } from 'hooks/useForm'
 import TextInput from 'components/TextInput'
+import { useNavigate } from 'react-router-dom'
 
 type PageFunctionalityType = 'login' | 'register'
 
@@ -26,6 +27,7 @@ interface LoginFormProps {
 }
 
 const User: React.FC = () => {
+  const navigate = useNavigate()
   const [pageFunctionality, setPageFunctionality] =
     useState<PageFunctionalityType>('login')
 
@@ -81,6 +83,9 @@ const User: React.FC = () => {
       const username = email.split('@')[0]
       const { status, message } = setUserSession(username, isLoginActive())
       RenderAToast(status, message)
+      if (status === 'success') {
+        navigate('/home')
+      }
     }
   }
 
