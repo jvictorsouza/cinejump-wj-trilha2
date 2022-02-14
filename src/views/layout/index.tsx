@@ -31,7 +31,26 @@ const Layout: React.FC = () => {
       <StylesContainer>
         <Outlet />
       </StylesContainer>
-      <Footer />
+      <Footer
+        primaryColor="#E83F5B"
+        secondaryColor="#FFFFFF"
+        linkTitles={[
+          'Desenvolvido por João Chagas',
+          'Proposta do projeto',
+          'Protótipo no Figma',
+          'Apresentação ao comitê',
+          'Documentação'
+        ]}
+        linkPaths={[
+          'https://www.linkedin.com/in/jvictorsouza/',
+          'https://webjump.atlassian.net/wiki/spaces/AW/pages/2195030481/Projeto+Final+-+Trilha+2',
+          'https://www.figma.com/file/um4dcEJCOlEvB6kCe9KCOD/Cinejump?node-id=7185%3A17',
+          'https://docs.google.com/presentation/d/1iKBjjW9TpO_-vyyNWrqT4LzeDZLyTc7xiOxgFo0BONA/edit?usp=sharing',
+          '_blank',
+          'https://webjump.atlassian.net/wiki/spaces/AW/pages/2195030481/Projeto+Final+-+Trilha+1'
+        ]}
+        imageLogo="assets/images/Logo-white.svg"
+      />
     </Styles>
   )
 }
