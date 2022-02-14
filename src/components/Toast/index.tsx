@@ -1,11 +1,9 @@
-import React from 'react';
+import React from 'react'
 
-import { StyledToastContainer } from './styles';
+import { StyledToastContainer } from './styles'
 
-const StyledToast : React.FC = () => {
-    return (
-        <StyledToastContainer />
-    )
+const StyledToast: React.FC = () => {
+  return <StyledToastContainer />
 }
 
-export default StyledToast;
+export default StyledToast

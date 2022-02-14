@@ -1,16 +1,12 @@
-import styled from "styled-components";
-import { ToastContainer } from "react-toastify";
-import toastConfig from "../../configs/toastConfig";
-
-
-export const Styles:any = styled.div`
-`;
-
+import styled from 'styled-components'
+import { ToastContainer } from 'react-toastify'
+import toastConfig from '../../configs/toastConfig'
 
 export const StyledToastContainer = styled(ToastContainer).attrs({
-  ...toastConfig,
+  ...toastConfig
 })`
   .Toastify__toast--error {
+    font-family: 'Ubuntu', sans-serif;
     background: #ab4b4b;
     color: ${({ theme }) => theme.colors.one};
     font-size: 15px;
@@ -23,6 +19,7 @@ export const StyledToastContainer = styled(ToastContainer).attrs({
   }
 
   .Toastify__toast--success {
+    font-family: 'Ubuntu', sans-serif;
     background: #4d9144;
     color: ${({ theme }) => theme.colors.one};
     font-size: 15px;
@@ -34,6 +31,7 @@ export const StyledToastContainer = styled(ToastContainer).attrs({
   }
 
   .Toastify__toast--warning {
+    font-family: 'Ubuntu', sans-serif;
     background: #aba94b;
     color: ${({ theme }) => theme.colors.one};
     font-size: 15px;
@@ -43,4 +41,4 @@ export const StyledToastContainer = styled(ToastContainer).attrs({
       background: #f3ef70;
     }
   }
-`;
+`
