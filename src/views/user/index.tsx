@@ -1,7 +1,7 @@
 import { Assets } from 'helpers/assets'
 import { errorMessagesValidation } from 'helpers/string'
 import { setUserSession } from 'helpers/storage'
-import { RenderAToast } from 'helpers/toast'
+import { RenderAToast, ToastStatusType } from 'helpers/toast'
 import React, { useState } from 'react'
 import PrimaryContent from './components/primaryContent'
 import SecondaryContent from './components/secondaryContent'
@@ -82,7 +82,7 @@ const User: React.FC = () => {
       const { email } = fields
       const username = email.split('@')[0]
       const { status, message } = setUserSession(username, isLoginActive())
-      RenderAToast(status, message)
+      RenderAToast(status as ToastStatusType, message)
       if (status === 'success') {
         navigate('/home')
       }
