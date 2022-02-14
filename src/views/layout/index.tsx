@@ -11,10 +11,22 @@ const Layout: React.FC = () => {
     if (!localStorage.getItem('session')) navigate('/user')
   }, [navigate])
 
+  const logoutAndReload = () => {
+    localStorage.removeItem('session')
+    localStorage.removeItem('user')
+    window.location.reload()
+  }
+
   return (
     <Styles>
       <StylesContainerHeader>
-        <Header />
+        <Header
+          primaryColor="#E83F5B"
+          secondaryColor="#FFFFFF"
+          buttonsTitles={['Filmes', 'Séries']}
+          imageLogo="assets/images/Logo-white.svg"
+          logoutFunction={logoutAndReload}
+        />
       </StylesContainerHeader>
       <StylesContainer>
         <Outlet />
