@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import Footer from './components/Footer'
 import Header from './components/Header'
-import { Styles, StylesContainer, StylesContainerHeader } from './styles'
+import { Styles } from './styles'
 
 const Layout: React.FC = () => {
   const navigate = useNavigate()
@@ -19,18 +19,14 @@ const Layout: React.FC = () => {
 
   return (
     <Styles>
-      <StylesContainerHeader>
-        <Header
-          primaryColor="#E83F5B"
-          secondaryColor="#FFFFFF"
-          buttonsTitles={['Filmes', 'Séries']}
-          imageLogo="assets/images/Logo-white.svg"
-          logoutFunction={logoutAndReload}
-        />
-      </StylesContainerHeader>
-      <StylesContainer>
-        <Outlet />
-      </StylesContainer>
+      <Header
+        primaryColor="#E83F5B"
+        secondaryColor="#FFFFFF"
+        buttonsTitles={['Filmes', 'Séries']}
+        imageLogo="assets/images/Logo-white.svg"
+        logoutFunction={logoutAndReload}
+      />
+      <Outlet />
       <Footer
         primaryColor="#E83F5B"
         secondaryColor="#FFFFFF"

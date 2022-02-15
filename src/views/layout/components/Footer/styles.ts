@@ -7,19 +7,17 @@ export const LayoutStyled = styled('div')`
       background-color: ${backgroundColor};
       width: 100%;
       min-width: 550px;
-      position: fixed;
-      top: 0;
-      z-index: 2;
+      bottom: 0;
     `}
 `
 
 export const ContentStyled = styled('div')`
   margin: 0 auto;
   max-width: 1000px;
-  padding: 30px;
+  padding: 30px 0px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
 `
 
 export const ListLinksStyled = styled('div')`
