@@ -1,28 +1,59 @@
 import React, { useState, useEffect } from 'react'
-import { getPopularMovies } from 'apis/tmdb'
+import {
+  getPopularMovies,
+  getPlayingMovies,
+  getRecomendationsMovies,
+  getTopMovies
+} from 'apis/tmdb'
 import {
   ContentStyled,
   LayoutStyled,
   LayoutHighlightsStyled,
   ContentHighlightsStyled,
   MainHighlightStyled,
-  SecondaryHighlightStyled
+  SecondaryHighlightStyled,
+  ContainerRowStyled,
+  LayoutRowStyled,
+  ContentRowStyled,
+  ImageCardStyled,
+  HeartFavoritesStyled
 } from './styles'
 import { StrObjectAny } from 'interfaces'
+import { Assets } from 'helpers/assets'
 
 const Home: React.FC = (...props) => {
   const [popularsMovies, setPopularsMovies] = useState<Array<StrObjectAny>>([])
+  const [playingMovies, setPlayingMovies] = useState<Array<StrObjectAny>>([])
+  const [topMovies, setTopMovies] = useState<Array<StrObjectAny>>([])
+  const [recomendationsMovies, setRecomendationsMovies] = useState<Array<StrObjectAny>>(
+    []
+  )
 
   useEffect(() => {
-    const returnApi = getPopularMovies()
-    returnApi.then((data: StrObjectAny) => {
+    getPopularMovies().then((data: StrObjectAny) => {
       if (data) {
-        setPopularsMovies(data.results.slice(0, 3))
+        setPopularsMovies(data.results)
+        getRecomendationsMovies(data.results[0].id).then((data: StrObjectAny) => {
+          if (data) setRecomendationsMovies(data.results)
+        })
       }
+    })
+    getPlayingMovies().then((data: StrObjectAny) => {
+      if (data) setPlayingMovies(data.results)
+    })
+    getTopMovies().then((data: StrObjectAny) => {
+      if (data) setTopMovies(data.results)
     })
   }, [])
 
   const renderHighlights = () => {
+    const verifyOverviewSize = (overview: string) => {
+      if (overview.length <= 265) {
+        return overview
+      } else {
+        return `${overview.slice(0, 260)}...`
+      }
+    }
     const renderMainHighlight = (movie: StrObjectAny) => {
       return (
         <MainHighlightStyled>
@@ -32,7 +63,7 @@ const Home: React.FC = (...props) => {
           />
           <div id="main-highlights-banner-info">
             <span>{movie.title}</span>
-            <label>{movie.overview}</label>
+            <label>{verifyOverviewSize(movie.overview)}</label>
           </div>
         </MainHighlightStyled>
       )
@@ -53,12 +84,12 @@ const Home: React.FC = (...props) => {
     }
     return (
       <LayoutHighlightsStyled>
-        {popularsMovies.length >= 3 ? (
+        {recomendationsMovies.length >= 3 ? (
           <ContentHighlightsStyled>
-            {renderMainHighlight(popularsMovies[0])}
+            {renderMainHighlight(recomendationsMovies[0])}
             <SecondaryHighlightStyled>
-              {renderSecondaryHighlight(popularsMovies[1])}
-              {renderSecondaryHighlight(popularsMovies[2])}
+              {renderSecondaryHighlight(recomendationsMovies[1])}
+              {renderSecondaryHighlight(recomendationsMovies[2])}
             </SecondaryHighlightStyled>
           </ContentHighlightsStyled>
         ) : null}
@@ -66,9 +97,49 @@ const Home: React.FC = (...props) => {
     )
   }
 
+  const renderRow = (
+    data: Array<StrObjectAny>,
+    title: string,
+    addingInfoLabel?: string
+  ) => {
+    return (
+      <div id="pre-layout-home-row">
+        <LayoutRowStyled>
+          <ContentRowStyled>
+            <span>{title}</span>
+            <div>
+              {data.map((movie: StrObjectAny) => {
+                return (
+                  <ImageCardStyled
+                    title={
+                      (addingInfoLabel &&
+                        `${movie.original_title}: ${movie[addingInfoLabel]}`) ||
+                      `${movie.original_title}`
+                    }
+                    urlImage={`${process.env.REACT_APP_IMAGE_BASE_URL}/w185${movie.poster_path}`}
+                  >
+                    <HeartFavoritesStyled
+                      id={`${movie.original_title}|${movie.poster_path}-heart-poppulars`}
+                      src={Assets('assets/images/BsHeartFill-black.svg')}
+                    />
+                  </ImageCardStyled>
+                )
+              })}
+            </div>
+          </ContentRowStyled>
+        </LayoutRowStyled>
+      </div>
+    )
+  }
+
   return (
     <LayoutStyled>
-      <ContentStyled>{renderHighlights()}</ContentStyled>
+      <ContentStyled>
+        {renderHighlights()}
+        {renderRow(popularsMovies, 'Populares')}
+        {renderRow(playingMovies, 'Em Exibição')}
+        {renderRow(topMovies, 'Top Filmes', 'vote_average')}
+      </ContentStyled>
     </LayoutStyled>
   )
 }

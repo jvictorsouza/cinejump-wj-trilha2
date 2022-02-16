@@ -1,3 +1,4 @@
+import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 
 export const LayoutStyled = styled.div`
@@ -10,6 +11,17 @@ export const LayoutStyled = styled.div`
 
 export const ContentStyled = styled.div`
   width: 100%;
+  #pre-layout-home-row {
+    :hover {
+      background-color: #80bcb8;
+      div {
+        background-color: #80bcb8;
+        span {
+          color: white;
+        }
+      }
+    }
+  }
 `
 
 export const ContainerRowStyled = styled.div`
@@ -17,6 +29,75 @@ export const ContainerRowStyled = styled.div`
   flex-direction: row;
   max-width: 1000px;
   margin: 0 auto;
+`
+
+export const LayoutRowStyled = styled.div`
+  width: 100%;
+`
+
+export const ContentRowStyled = styled.div`
+  max-width: 1000px;
+  background-color: #ffffff;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  column-gap: 15px;
+  overflow: hidden;
+  padding: 15px 0;
+
+  span {
+    width: 100%;
+    font-weight: 300;
+    font-size: 24px;
+    color: #e83f5b;
+    margin: 0 5px;
+  }
+  div {
+    display: flex;
+    flex-direction: row;
+    column-gap: 15px;
+    overflow-x: auto;
+    margin: 5px;
+
+    ::-webkit-scrollbar {
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #ffffff;
+      border-radius: 5px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #e83f5b;
+      border-radius: 5px;
+    }
+  }
+
+  :hover {
+    background-color: #80bcb8;
+    span {
+      color: white;
+    }
+  }
+`
+
+export const ImageCardStyled = styled.div`
+  ${({ urlImage }: { urlImage: string }) =>
+    css`
+      min-height: 278px;
+      min-width: 185px;
+      width: auto;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      background-image: url(${urlImage});
+    `}
+`
+
+export const HeartFavoritesStyled = styled.img`
+  cursor: pointer;
+  height: fit-content;
+  margin: auto;
+  margin-top: 5px;
+  margin-right: 5px;
 `
 
 export const RowStyled = styled.div`
@@ -53,6 +134,7 @@ export const SecondaryHighlightStyled = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  row-gap: 5px;
 
   img {
     border-radius: 10px 10px 0px 0px;
@@ -66,9 +148,9 @@ export const SecondaryHighlightStyled = styled.div`
       display: flex;
       align-items: flex-end;
       position: relative;
-      top: 100px;
+      top: 102px;
       max-width: 100%;
-      height: 30px;
+      height: 28px;
       background-color: #0000004d;
       border: 5px 5px 0 5px solid #0000004d;
       padding: 5px 5px 0 5px;
@@ -104,20 +186,20 @@ export const MainHighlightStyled = styled.div`
     flex-direction: column;
     span {
       background-color: #0000004d;
-      padding: 0px 5px;
+      padding: 5px 5px 0px 5px;
       color: #ffffff;
       font-size: 24px;
       font-weight: 400;
       line-height: 24px;
       height: 20px;
       max-width: 100%;
-      z-index: 1;
+      z-index: 2;
     }
     label {
       position: relative;
       background-color: #0000004d;
-      border-radius: 5px;
-      padding: 0px 5px;
+      border-radius: 0px 5px;
+      padding: 5px 5px;
       color: #ffffff;
       font-size: 16px;
       font-weight: 300;
