@@ -50,7 +50,12 @@ const Header: React.FC<HeaderProps> = ({
         <BttnsCampStyled>
           {buttonsTitles.map((title: string, index: number) => {
             return (
-              <BtnSpanStyled onClick={() => handleBttnSpan(index)}>{title}</BtnSpanStyled>
+              <BtnSpanStyled
+                key={`button-header-${index}`}
+                onClick={() => handleBttnSpan(index)}
+              >
+                {title}
+              </BtnSpanStyled>
             )
           })}
         </BttnsCampStyled>
