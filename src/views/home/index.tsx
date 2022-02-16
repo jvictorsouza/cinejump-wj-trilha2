@@ -12,7 +12,6 @@ import {
   ContentHighlightsStyled,
   MainHighlightStyled,
   SecondaryHighlightStyled,
-  ContainerRowStyled,
   LayoutRowStyled,
   ContentRowStyled,
   ImageCardStyled,
@@ -23,6 +22,12 @@ import {
 import { StrObjectAny } from 'interfaces'
 import { Assets } from 'helpers/assets'
 import { searchTrailer } from 'apis/youtube'
+import {
+  loadFavorites,
+  processStorageLogout,
+  updateFavorites,
+  verifyOnFavorites
+} from 'helpers/storage'
 
 const Home: React.FC = (...props) => {
   const [popularsMovies, setPopularsMovies] = useState<Array<StrObjectAny>>([])
@@ -31,22 +36,34 @@ const Home: React.FC = (...props) => {
   const [recomendationsMovies, setRecomendationsMovies] = useState<Array<StrObjectAny>>(
     []
   )
+  const [favoritesMovies, setFavoritesMovies] = useState<Array<StrObjectAny>>([])
 
   useEffect(() => {
-    getPopularMovies().then((data: StrObjectAny) => {
-      if (data) {
-        setPopularsMovies(data.results)
-        getRecomendationsMovies(data.results[0].id).then((data: StrObjectAny) => {
-          if (data) setRecomendationsMovies(data.results)
-        })
-      }
-    })
-    getPlayingMovies().then((data: StrObjectAny) => {
-      if (data) setPlayingMovies(data.results)
-    })
-    getTopMovies().then((data: StrObjectAny) => {
-      if (data) setTopMovies(data.results)
-    })
+    let userStorage = localStorage.getItem('user')
+    if (userStorage) {
+      getPopularMovies().then((data: StrObjectAny) => {
+        if (data) {
+          setPopularsMovies(data.results)
+          getRecomendationsMovies(data.results[0].id).then((data: StrObjectAny) => {
+            if (data) setRecomendationsMovies(data.results)
+          })
+        }
+      })
+      getPlayingMovies().then((data: StrObjectAny) => {
+        if (data) setPlayingMovies(data.results)
+      })
+      getTopMovies().then((data: StrObjectAny) => {
+        if (data) setTopMovies(data.results)
+      })
+      let favoritesData = loadFavorites()
+
+      let user = JSON.parse(userStorage)
+      setFavoritesMovies(
+        Object.keys(favoritesData).includes(user) ? favoritesData[user] : []
+      )
+    } else {
+      processStorageLogout()
+    }
   }, [])
 
   const renderHighlights = () => {
@@ -105,6 +122,13 @@ const Home: React.FC = (...props) => {
     title: string,
     addingInfoLabel?: string
   ) => {
+    const handleHeartFavorite = (movie: StrObjectAny) => {
+      let favorites: Array<StrObjectAny> = updateFavorites(
+        `${movie.original_title}|${movie.poster_path}-heart`
+      )
+      setFavoritesMovies(favorites)
+    }
+
     return (
       <div id="pre-layout-home-row">
         <LayoutRowStyled>
@@ -122,8 +146,9 @@ const Home: React.FC = (...props) => {
                     urlImage={`${process.env.REACT_APP_IMAGE_BASE_URL}/w185${movie.poster_path}`}
                   >
                     <HeartFavoritesStyled
-                      id={`${movie.original_title}|${movie.poster_path}-heart-poppulars`}
-                      src={Assets('assets/images/BsHeartFill-black.svg')}
+                      id={`${movie.original_title}|${movie.poster_path}-heart`}
+                      src={verifyOnFavorites(movie.original_title, movie.poster_path)}
+                      onClick={() => handleHeartFavorite(movie)}
                     />
                   </ImageCardStyled>
                 )
@@ -179,6 +204,9 @@ const Home: React.FC = (...props) => {
         {renderMoviesRow(playingMovies, 'Em Exibição')}
         {renderTrailersRow(popularsMovies, 'Trailers')}
         {renderMoviesRow(topMovies, 'Top Filmes', 'vote_average')}
+        {favoritesMovies && favoritesMovies.length > 0
+          ? renderMoviesRow(favoritesMovies, 'Favoritos')
+          : null}
       </ContentStyled>
     </LayoutStyled>
   )

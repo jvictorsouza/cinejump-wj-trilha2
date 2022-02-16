@@ -24,13 +24,6 @@ export const ContentStyled = styled.div`
   }
 `
 
-export const ContainerRowStyled = styled.div`
-  display: flex;
-  flex-direction: row;
-  max-width: 1000px;
-  margin: 0 auto;
-`
-
 export const LayoutRowStyled = styled.div`
   width: 100%;
 `

@@ -11,10 +11,10 @@ const Layout: React.FC = () => {
     if (!localStorage.getItem('session')) navigate('/user')
   }, [navigate])
 
-  const logoutAndReload = () => {
+  const logoutAndRedirect = () => {
     localStorage.removeItem('session')
     localStorage.removeItem('user')
-    window.location.reload()
+    navigate('/user')
   }
 
   return (
@@ -24,7 +24,7 @@ const Layout: React.FC = () => {
         secondaryColor="#FFFFFF"
         buttonsTitles={['Filmes', 'Séries']}
         imageLogo="assets/images/Logo-white.svg"
-        logoutFunction={logoutAndReload}
+        logoutFunction={logoutAndRedirect}
       />
       <Outlet />
       <Footer
