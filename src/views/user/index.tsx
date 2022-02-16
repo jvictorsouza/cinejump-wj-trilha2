@@ -1,7 +1,7 @@
 import { Assets } from 'helpers/assets'
 import { errorMessagesValidation } from 'helpers/string'
 import { setUserSession } from 'helpers/storage'
-import { RenderAToast } from 'helpers/toast'
+import { RenderAToast, ToastStatusType } from 'helpers/toast'
 import React, { useState } from 'react'
 import PrimaryContent from './components/primaryContent'
 import SecondaryContent from './components/secondaryContent'
@@ -16,6 +16,7 @@ import {
 } from './styles'
 import useForm, { Form } from 'hooks/useForm'
 import TextInput from 'components/TextInput'
+import { useNavigate } from 'react-router-dom'
 
 type PageFunctionalityType = 'login' | 'register'
 
@@ -26,6 +27,7 @@ interface LoginFormProps {
 }
 
 const User: React.FC = () => {
+  const navigate = useNavigate()
   const [pageFunctionality, setPageFunctionality] =
     useState<PageFunctionalityType>('login')
 
@@ -80,7 +82,10 @@ const User: React.FC = () => {
       const { email } = fields
       const username = email.split('@')[0]
       const { status, message } = setUserSession(username, isLoginActive())
-      RenderAToast(status, message)
+      RenderAToast(status as ToastStatusType, message)
+      if (status === 'success') {
+        navigate('/home')
+      }
     }
   }
 
