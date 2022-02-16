@@ -92,12 +92,31 @@ export const ImageCardStyled = styled.div`
     `}
 `
 
+export const TrailerCardStyled = styled.div`
+  ${({ urlImage }: { urlImage: string }) =>
+    css`
+      min-height: 225px;
+      min-width: 400px;
+      border-radius: 10px;
+      margin: 0;
+      margin-bottom: 15px;
+      justify-content: center;
+      background-image: url(${urlImage});
+    `}
+`
+
 export const HeartFavoritesStyled = styled.img`
   cursor: pointer;
   height: fit-content;
   margin: auto;
   margin-top: 5px;
   margin-right: 5px;
+`
+
+export const PlayVideoStyled = styled.img`
+  cursor: pointer;
+  height: fit-content;
+  margin: auto;
 `
 
 export const RowStyled = styled.div`

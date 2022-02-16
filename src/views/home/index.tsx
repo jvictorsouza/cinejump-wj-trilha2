@@ -16,10 +16,13 @@ import {
   LayoutRowStyled,
   ContentRowStyled,
   ImageCardStyled,
-  HeartFavoritesStyled
+  HeartFavoritesStyled,
+  TrailerCardStyled,
+  PlayVideoStyled
 } from './styles'
 import { StrObjectAny } from 'interfaces'
 import { Assets } from 'helpers/assets'
+import { searchTrailer } from 'apis/youtube'
 
 const Home: React.FC = (...props) => {
   const [popularsMovies, setPopularsMovies] = useState<Array<StrObjectAny>>([])
@@ -97,7 +100,7 @@ const Home: React.FC = (...props) => {
     )
   }
 
-  const renderRow = (
+  const renderMoviesRow = (
     data: Array<StrObjectAny>,
     title: string,
     addingInfoLabel?: string
@@ -132,13 +135,50 @@ const Home: React.FC = (...props) => {
     )
   }
 
+  const renderTrailersRow = (
+    data: StrObjectAny,
+    title: string,
+    addingInfoLabel?: string
+  ) => {
+    return (
+      <div id="pre-layout-home-row">
+        <LayoutRowStyled>
+          <ContentRowStyled>
+            <span>{title}</span>
+            <div>
+              {data.map((movie: StrObjectAny) => {
+                return (
+                  <TrailerCardStyled
+                    title={
+                      (addingInfoLabel &&
+                        `${movie.original_title}: ${movie[addingInfoLabel]}`) ||
+                      `${movie.original_title}`
+                    }
+                    urlImage={`${process.env.REACT_APP_IMAGE_BASE_URL}/w500${movie.backdrop_path}`}
+                  >
+                    <PlayVideoStyled
+                      id={`${movie.original_title}|${movie.poster_path}-heart-poppulars`}
+                      src={Assets('assets/images/FiPlay.svg')}
+                      onClick={() => searchTrailer(`${movie.original_title}`)}
+                    />
+                  </TrailerCardStyled>
+                )
+              })}
+            </div>
+          </ContentRowStyled>
+        </LayoutRowStyled>
+      </div>
+    )
+  }
+
   return (
     <LayoutStyled>
       <ContentStyled>
         {renderHighlights()}
-        {renderRow(popularsMovies, 'Populares')}
-        {renderRow(playingMovies, 'Em Exibição')}
-        {renderRow(topMovies, 'Top Filmes', 'vote_average')}
+        {renderMoviesRow(popularsMovies, 'Populares')}
+        {renderMoviesRow(playingMovies, 'Em Exibição')}
+        {renderTrailersRow(popularsMovies, 'Trailers')}
+        {renderMoviesRow(topMovies, 'Top Filmes', 'vote_average')}
       </ContentStyled>
     </LayoutStyled>
   )
