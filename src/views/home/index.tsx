@@ -120,6 +120,7 @@ const Home: React.FC = (...props) => {
   const renderMoviesRow = (
     data: Array<StrObjectAny>,
     title: string,
+    rowId: string,
     addingInfoLabel?: string
   ) => {
     const handleHeartFavorite = (movie: StrObjectAny) => {
@@ -135,9 +136,10 @@ const Home: React.FC = (...props) => {
           <ContentRowStyled>
             <span>{title}</span>
             <div>
-              {data.map((movie: StrObjectAny) => {
+              {data.map((movie: StrObjectAny, index: number) => {
                 return (
                   <ImageCardStyled
+                    key={`${rowId}-image-card-${index}`}
                     title={
                       (addingInfoLabel &&
                         `${movie.original_title}: ${movie[addingInfoLabel]}`) ||
@@ -146,6 +148,7 @@ const Home: React.FC = (...props) => {
                     urlImage={`${process.env.REACT_APP_IMAGE_BASE_URL}/w185${movie.poster_path}`}
                   >
                     <HeartFavoritesStyled
+                      key={`${rowId}-heart-image-card-${index}`}
                       id={`${movie.original_title}|${movie.poster_path}-heart`}
                       src={verifyOnFavorites(movie.original_title, movie.poster_path)}
                       onClick={() => handleHeartFavorite(movie)}
@@ -171,9 +174,10 @@ const Home: React.FC = (...props) => {
           <ContentRowStyled>
             <span>{title}</span>
             <div>
-              {data.map((movie: StrObjectAny) => {
+              {data.map((movie: StrObjectAny, index: number) => {
                 return (
                   <TrailerCardStyled
+                    key={`trailer-image-card-${index}`}
                     title={
                       (addingInfoLabel &&
                         `${movie.original_title}: ${movie[addingInfoLabel]}`) ||
@@ -182,6 +186,7 @@ const Home: React.FC = (...props) => {
                     urlImage={`${process.env.REACT_APP_IMAGE_BASE_URL}/w500${movie.backdrop_path}`}
                   >
                     <PlayVideoStyled
+                      key={`trailer-play-image-card-${index}`}
                       id={`${movie.original_title}|${movie.poster_path}-heart-poppulars`}
                       src={Assets('assets/images/FiPlay.svg')}
                       onClick={() => searchTrailer(`${movie.original_title}`)}
@@ -200,12 +205,12 @@ const Home: React.FC = (...props) => {
     <LayoutStyled>
       <ContentStyled>
         {renderHighlights()}
-        {renderMoviesRow(popularsMovies, 'Populares')}
-        {renderMoviesRow(playingMovies, 'Em Exibição')}
+        {renderMoviesRow(popularsMovies, 'Populares', 'populars')}
+        {renderMoviesRow(playingMovies, 'Em Exibição', 'playing')}
         {renderTrailersRow(popularsMovies, 'Trailers')}
-        {renderMoviesRow(topMovies, 'Top Filmes', 'vote_average')}
+        {renderMoviesRow(topMovies, 'Top Filmes', 'top', 'vote_average')}
         {favoritesMovies && favoritesMovies.length > 0
-          ? renderMoviesRow(favoritesMovies, 'Favoritos')
+          ? renderMoviesRow(favoritesMovies, 'Favoritos', 'favorites')
           : null}
       </ContentStyled>
     </LayoutStyled>

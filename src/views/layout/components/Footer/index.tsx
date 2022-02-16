@@ -27,7 +27,11 @@ const Footer: React.FC<FooterProps> = ({
         <ListLinksStyled>
           {linkTitles.map((title: string, index: number) => {
             return (
-              <span id="LinkSpn" onClick={() => window.open(linkPaths[index], '_blank')}>
+              <span
+                key={`link-footer-${index}`}
+                id="LinkSpn"
+                onClick={() => window.open(linkPaths[index], '_blank')}
+              >
                 {title}
               </span>
             )
